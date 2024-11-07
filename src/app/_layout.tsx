@@ -7,7 +7,7 @@ import { AppProvider } from "../hooks";
 import { useAuth } from "../hooks/Auth";
 
 const toastConfig = {
-  success: (props) => (
+  success: (props: any) => (
     <BaseToast
       {...props}
       style={{ borderLeftColor: "green" }}
@@ -21,7 +21,7 @@ const toastConfig = {
       }}
     />
   ),
-  signout: (props) => (
+  signout: (props: any) => (
     <ErrorToast
       {...props}
       style={{ borderLeftColor: "orange" }}
@@ -35,7 +35,7 @@ const toastConfig = {
       }}
     />
   ),
-  error: (props) => (
+  error: (props: any) => (
     <ErrorToast
       {...props}
       style={{ borderLeftColor: "red" }}
@@ -52,30 +52,27 @@ const toastConfig = {
 };
 
 export default function Layout() {
-  // const { user } = useAuth();
-  // const segments = useSegments();
+  const { user } = useAuth();
+  const segments = useSegments();
 
-  // useEffect(() => {
-  //   const inAuthGroup = segments[0] === "(protected)";
+  useEffect(() => {
+    const inAuthGroup = segments[0] === "(protected)";
 
-  //   if (!user?.authenticated && inAuthGroup) {
-  //     router.push("/");
-  //   } else if (user?.authenticated) {
-  //     router.replace("/(protected)");
-  //   }
-  // }, [user]);
+    if (!user?.authenticated && inAuthGroup) {
+      router.push("/");
+    } else if (user?.authenticated) {
+      router.replace("/(protected)");
+    }
+  }, [user]);
 
   return (
     <AppProvider>
-      <Stack />
+      <StatusBar barStyle="light-content" />
+      <Stack>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(protected)" />
+      </Stack>
+      <Toast config={toastConfig} />
     </AppProvider>
-    // <AppProvider>
-    //   <StatusBar barStyle="light-content" />
-    //   <Stack>
-    //     <Stack.Screen name="index" />
-    //     <Stack.Screen name="(protected)" />
-    //   </Stack>
-    //   <Toast config={toastConfig} />
-    // </AppProvider>
   );
 }

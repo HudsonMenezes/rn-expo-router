@@ -1,9 +1,10 @@
 // app/_layout.tsx
-import React from "react";
-import { Stack } from "expo-router";
+import React, { useEffect } from "react";
+import { Stack, useSegments, router } from "expo-router";
 import { StatusBar } from "react-native";
-import { AuthProvider } from "@/hooks/Auth";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import { AppProvider } from "../hooks";
+import { useAuth } from "../hooks/Auth";
 
 const toastConfig = {
   success: (props) => (
@@ -51,12 +52,30 @@ const toastConfig = {
 };
 
 export default function Layout() {
+  // const { user } = useAuth();
+  // const segments = useSegments();
+
+  // useEffect(() => {
+  //   const inAuthGroup = segments[0] === "(protected)";
+
+  //   if (!user?.authenticated && inAuthGroup) {
+  //     router.push("/");
+  //   } else if (user?.authenticated) {
+  //     router.replace("/(protected)");
+  //   }
+  // }, [user]);
+
   return (
-    <AuthProvider>
-      <StatusBar barStyle="dark-content" />
-      {/* Conteúdo da rota */}
-      <Stack screenOptions={{ headerShown: false }} />
-      <Toast config={toastConfig} />
-    </AuthProvider>
+    <AppProvider>
+      <Stack />
+    </AppProvider>
+    // <AppProvider>
+    //   <StatusBar barStyle="light-content" />
+    //   <Stack>
+    //     <Stack.Screen name="index" />
+    //     <Stack.Screen name="(protected)" />
+    //   </Stack>
+    //   <Toast config={toastConfig} />
+    // </AppProvider>
   );
 }

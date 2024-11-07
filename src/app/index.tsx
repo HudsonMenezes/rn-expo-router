@@ -1,26 +1,29 @@
-import { useAuth } from "@/hooks/Auth";
 import { globalStyles } from "@/styles";
+import { router } from "expo-router";
 import { View, Text, Button } from "react-native";
+import { useAuth } from "../hooks/Auth";
 
 export default function Index() {
   const { signIn, signOut } = useAuth();
 
+  const handleEntrarSuper = async () => {
+    try {
+      signIn({
+        user: {
+          email: "super@email.com",
+          id: 1,
+          name: "Super Hudson",
+          password: "Super123",
+        },
+      });
+      router.replace("/(protected)");
+    } catch (error) {}
+  };
+
   return (
     <View style={globalStyles.container}>
       <Text style={{ fontSize: 24, marginBottom: 40 }}>Fazer Login</Text>
-      <Button
-        title="Login com Super Usuário"
-        onPress={() =>
-          signIn({
-            user: {
-              email: "super@email.com",
-              id: 1,
-              name: "Super Hudson",
-              password: "Super123",
-            },
-          })
-        }
-      />
+      <Button title="Login com Super Usuário" onPress={handleEntrarSuper} />
       <Button
         title="Login com Administrador"
         onPress={() =>
